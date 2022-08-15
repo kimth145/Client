@@ -8,15 +8,15 @@
         <script>
             function handleClick(language, msg){
 
-                axios.post('http://localhost:3000/language/',{lan:language, msg:msg})
-                .then((result)=>{
-                    document.getElementById('msg').innerHTML = result.data
-                })
+                //axios.post('http://localhost:3000/language/',{lan:language, msg:msg})
+                //.then((result)=>{
+                document.getElementById('msg').innerHTML = msg
+                //})
             }
 
             function init(){
-
-                axios.get('http://localhost:3000/language_all')
+                axios.get('https://server-0802.herokuapp.com/language_all')
+                //axios.get('http://localhost:3000/language_all')
                 .then(result =>{
 
                     const lan_box = document.getElementById('language_box')
