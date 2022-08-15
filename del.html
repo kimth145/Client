@@ -1,0 +1,59 @@
+<html>
+
+    <head>
+        <title>削除</title>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+        <script>
+
+            const init = () =>{
+                //axios.get('http:localhost:3000/language_all')
+                axios.get('/language_all')
+                .then(result=>{
+
+                    const del = document.getElementById('del')
+                    const select = document.createElement('select')
+                    select.id = 'del_select'
+
+                    const option = document.createElement('option')
+                    option.innerHTML = '言語を選択してください。'
+                    option.hidden = true
+                    select.appendChild(option)
+
+                    result.data.map(c=>{
+                        const option = document.createElement('option')
+                        option.innerHTML = c.language
+                        select.appendChild(option) 
+                    })
+
+                    del.appendChild(select)
+                  
+                })
+            }
+
+            const handleDel = () =>{
+                const selectedItem = document.getElementById('del_select').value
+
+                axios.post('http:localhost:3000/del',{item:selectedItem})
+                .then(result=>{
+                    if(result.data==='OK'){
+                        document.getElementById('del_msg').innerHTML = '削除しました。'
+                    }
+                })
+            }
+
+        </script>
+
+    </head>
+
+    <body onload="init();">
+
+        <div id="del">
+            <div id="del_msg"></div>
+            <input type="button" value="削除" onclick="handleDel();">
+            <input type="button" value="Homeへ" onclick="location.href='app.html'">
+        </div>
+
+    </body>
+
+</html>

@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <title>登録</title>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+        <script>
+
+            const handleReg = () =>{
+
+                const lan = document.getElementsByName('lan')[0].value
+                const msg = document.getElementsByName('msg')[0].value
+
+                axios.post('http:localhost:3000/reg',{lan:lan, msg:msg})
+                .then(result=>{
+                    if(result.data==='OK'){
+                        document.getElementById('reg_msg').innerHTML = '登録しました。'
+                    }
+                })
+            }
+
+            const init = () =>{
+                console.log(location.search)
+            }
+
+        </script>
+    </head>
+
+    <body onload="init();">
+
+        言語:<input type="text" name="lan">
+        メッセージ:<input type="text" name="msg">
+        
+        <div id="reg_msg"></div>
+        <input type="button" value="登録" onclick="handleReg();">
+        <input type="button" value="Homeへ" onclick="location.href='app.html'">
+
+    </body>
+</html>

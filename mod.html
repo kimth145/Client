@@ -1,0 +1,81 @@
+<html>
+
+    <head>
+        <title>修正</title>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+        <script>
+
+            const init = () =>{
+
+                axios.get('http:localhost:3000/language_all')
+                .then(result=>{
+
+                    const del = document.getElementById('del')
+                    const select = document.createElement('select')
+                    select.id = 'mod_select'
+                    select.addEventListener('change',(e)=>{
+                        const selectedItem = e.target.value//document.getElementById('mod_select').value
+                        axios.get('http:localhost:3000/language/'+selectedItem)
+                        .then(result=>{
+
+                            const text = document.getElementsByName('text')
+                            text[0].value = result.data[0].language
+                            text[1].value = result.data[0].msg
+
+                        })
+                    })
+
+                    const option = document.createElement('option')
+                    option.innerHTML = '言語を選択してください。'
+                    option.hidden = true
+                    select.appendChild(option)
+
+                    result.data.map(c=>{
+                        const option = document.createElement('option')
+                        option.innerHTML = c.language
+                        select.appendChild(option) 
+                    })
+
+                    del.appendChild(select)
+                  
+                })
+            }
+
+            const handleMod = () =>{
+                const lan = document.getElementById('mod_select').value
+                const lan_mod = document.getElementsByName('text')[0].value
+                const msg = document.getElementsByName('text')[1].value
+
+                console.log(lan,msg)
+
+                axios.post('http:localhost:3000/mod/',{lan:lan ,lan_mod:lan_mod, msg:msg})
+                .then(result=>{
+                    console.log(result.data)
+                    if(result.data==='OK'){
+                        //document.getElementById('mod_msg').innerHTML = '修正しました。'
+                        
+                        location.href = 'app.html'
+                    }
+                })
+            }
+
+        </script>
+
+    </head>
+
+    <body onload="init();">
+
+        <div id="del">
+            <div id="mod_msg"></div>
+            <div>
+                言語：<input type="text" name="text">
+                メッセージ：<input type="text" name="text">
+            </div>
+            <input type="button" value="修正" onclick="handleMod();">
+            <input type="button" value="Homeへ" onclick="location.href='app.html'">
+        </div>
+
+    </body>
+
+</html>
